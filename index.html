@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emporio Shop — Офлайн Активации Steam</title>
+    <style>
+        /* Плавная прокрутка к топу сайта */
+        html {
+            scroll-behavior: smooth;
+        }
+        * {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #121214; 
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .hero-banner {
+            width: 100%; height: 450px;
+            background: url('banner.jpg') center/cover no-repeat !important;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            position: relative; box-shadow: inset 0 -80px 100px #121214;
+        }
+        .logo-container {
+            position: relative; z-index: 9999;
+            transition: all 0.4s ease; margin-bottom: 20px;
+            display: flex; justify-content: center;
+            align-items: center; width: 100%;
+        }
+        .logo-img {
+            max-height: 240px; object-fit: contain;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8));
+        }
+        .logo-container.sticky {
+    position: fixed;
+    top: 20px; 
+    left: 50%;
+    transform: translateX(-50%) scale(1);
+    margin-bottom: 0;
+    
+    /* Эффект глубокого мафиозного вина с полупрозрачностью */
+    background: linear-gradient(135deg, rgba(189, 8, 28, 0.85), rgba(120, 4, 15, 0.95));
+    
+    /* Размытие заднего плана (эффект дорогого матового стекла) */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    width: max-content;
+    padding: 10px 25px; /* Чуть увеличили отступы по бокам */
+    border-radius: 50px;
+    
+    /* Тонкая золотая рамка (стиль дона) */
+    border: 1px solid rgba(212, 175, 55, 0.4); 
+    
+    /* Тройная тень: объем, мягкое красное свечение и золотой отблеск */
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.6),
+        0 8px 32px rgba(189, 8, 28, 0.35),
+        inset 0 1px 2px rgba(212, 175, 55, 0.2);
+        
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Эффект дыхания капсулы при наведении мыши */
+.logo-container.sticky:hover {
+    transform: translateX(-50%) scale(1.05); /* Капсула слегка увеличивается */
+    border-color: rgba(212, 175, 55, 0.8);    /* Золотая рамка становится ярче */
+    box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.7),
+        0 12px 40px rgba(189, 8, 28, 0.5),    /* Неон вспыхивает сильнее */
+        inset 0 1px 3px rgba(212, 175, 55, 0.4);
+}
+        .logo-container.sticky .logo-img {
+            max-height: 50px;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.9));
+        }
+        
+        /* Черная жирная стрелка в белом кружке */
+        .sticky-arrow {
+            display: none;
+            width: 30px;
+            height: 30px;
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+        .sticky-arrow:hover {
+            transform: scale(1.1);
+        }
+        .logo-container.sticky .sticky-arrow {
+            display: flex;
+        }
+
+        .trust-badge {
+            background-color: rgba(28, 28, 31, 0.95);
+            border: 1px solid #D4AF37; padding: 12px 30px;
+            border-radius: 50px; font-weight: bold;
+            font-size: 1.1rem; letter-spacing: 1px;
+            box-shadow: 0 4px 25px rgba(212, 175, 55, 0.2);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: opacity 0.3s ease;
+            text-align: center;
+        }
+        .trust-badge span {
+            color: #D4AF37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+        body.scrolled .trust-badge { opacity: 0; pointer-events: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+        h2 {
+            text-align: center; font-size: 2rem; margin-bottom: 50px;
+            text-transform: uppercase; letter-spacing: 3px;
+            border-bottom: 2px solid #D4AF37; display: table;
+            margin-left: auto; margin-right: auto; padding-bottom: 12px;
+        }
+        
+        /* Сетка товаров */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        
+        .card {
+            background-color: #1C1C1F; border-radius: 12px; overflow: hidden;
+            border: 1px solid #2D2D33; display: flex; flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: #D4AF37; transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.15);
+        }
+        
+        /* Картинки всегда одинаковой высоты */
+        .card-img { 
+            width: 100%; 
+            height: 380px; 
+            max-height: 380px; 
+            object-fit: cover; 
+            object-position: center top;
+        }
+        
+        .info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .game-title { font-size: 1.35rem; font-weight: bold; margin-bottom: 12px; }
+        .features { list-style: none; color: #aaa; font-size: 0.9rem; margin-bottom: 25px; }
+        .features li { margin-bottom: 7px; position: relative; padding-left: 18px; }
+        .features li::before { content: "✦"; color: #D4AF37; position: absolute; left: 0; }
+        .footer-flex { display: flex; align-items: center; justify-content: space-between; }
+        .price { font-size: 1.45rem; font-weight: bold; color: #D4AF37; }
+        .btn {
+            color: #D4AF37; border: 2px solid #D4AF37; text-decoration: none;
+            padding: 10px 20px; border-radius: 6px; font-weight: bold;
+            text-transform: uppercase; font-size: 0.85rem; transition: all 0.2s;
+        }
+        .btn:hover { background-color: #D4AF37; color: #121214; }
+        footer { text-align: center; padding: 50px 20px; color: #4A4A52; font-size: 0.9rem; border-top: 1px solid #1C1C1F; margin-top: 80px; }
+    </style>
+</head>
+<body id="top">
+
+    <!-- Фоновый баннер -->
+    <section class="hero-banner">
+        <div id="logoContainer" class="logo-container">
+            <a href="#top" style="display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="logo.png" alt="Emporio Shop" class="logo-img">
+                <span class="sticky-arrow">🡩</span>
+            </a>
+        </div>
+        <div class="trust-badge" id="randomQuote"></div>
+    </section>
+
+    <!-- Список игр -->
+    <div class="container">
+        <h2>Доступные активации</h2>
+        <div class="grid">
+            
+             <!-- 1. ВЕДЬМАК -->
+            <div class="card">
+                <img src="https://static.cdprojektred.com/cms.cdprojektred.com/1c7635eea10a6aaf4cac74a27e765988db8f6912.png" alt="Witcher" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Ведьмак: Все части + DLC</div>
+                        <ul class="features">
+                            <li>Полная антология Геральта с добавкой</li>
+                            <li>Моментальная автовыдача 24/7</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">5 ₽</div>
+                        <a href="witcher.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. RESIDENT EVIL -->
+            <div class="card">
+                <img src="https://upload.wikimedia.org/wikipedia/ru/6/62/Resident_Evil_4_remake.png" alt="RE" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Resident Evil (Части 2 - 8)</div>
+                        <ul class="features">
+                            <li>(Почти) полный пак хорроров Steam</li>
+                            <li>Пожизненная гарантия</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">5 ₽</div>
+                        <a href="re.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SILENT HILL -->
+            <div class="card">
+                <img src="https://avatars.mds.yandex.net/get-mpic/13894603/2a00000199d7f66a78a7e71c2fe0f154d6d8/orig" alt="SH" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Silent Hill: f + 2 + Homecoming</div>
+                        <ul class="features">
+                            <li>Мрачная классика и ремейки</li>
+                            <li>Чистое сокровище</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">5 ₽</div>
+                        <a href="silenthill.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 4. DEATH STRANDING 2 -->
+            <div class="card">
+                <img src="https://www.kojimaproductions.jp/sites/default/files/styles/max_2600x2600/public/2026-03/coverimage_nocopy_mobile.jpg?itok=Kdc7eH4n" alt="DS2" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Death Stranding 2: On the Beach</div>
+                        <ul class="features">
+                            <li>Долгожданный шедевр Кодзимы</li>
+                            <li>Быстро и четко</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">20 ₽</div>
+                        <a href="ds2.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. DOOM -->
+            <div class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKcigwwr-vHmg4cUnt-XVOfuR_H0qJniIHbyUYfxHem3zGD82KtOIGbAc&s=10" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Doom: Dark Ages + Eternal</div>
+                        <ul class="features">
+                            <li>Premium новинка + Eternal</li>
+                            <li>Моментальная выдача</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">20 ₽</div>
+                        <a href="doom.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. ATOMIC HEART -->
+            <div class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwZROOhPHqXfFnQrPHpXM-jc7_OBp-l7cLN6zMTGdm8g&s=10" alt="Atomic" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Atomic Heart (Ultimate Edition)</div>
+                        <ul class="features">
+                            <li>Все вышедшие DLC в Steam</li>
+                            <li>Пожизненная гарантия</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">20 ₽</div>
+                        <a href="atomicheart.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. CRIMSON DESERT -->
+            <div class="card">
+                <img src="https://s1.pearlcdn.com/cd/brand/metatag/2025/09/25/7512ae3e8fa20250925065832812.jpg" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Crimson Desert</div>
+                        <ul class="features">
+                            <li>Экшен-RPG нового поколения</li>
+                            <li>Консильери на связи</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">30 ₽</div>
+                        <a href="crimsondesert.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. MY SUMMER / WINTER CAR -->
+            <div class="card">
+                <img src="MySummerCar.jpeg" alt="Cars" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">My Summer + My Winter Car</div>
+                        <ul class="features">
+                            <li>Машина — друг человека</li>
+                            <li>Моментальная выдача</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">5 ₽</div>
+                        <a href="carbundle.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. SILKSONG -->
+            <div class="card">
+                <img src="https://korobok.store/upload/iblock/6a3/49g9znho8yzylj1a045xr67hcsxiuh3b.webp" alt="Silksong" class="card-img" loading="lazy">
+                <div class="info">
+                    <div>
+                        <div class="game-title">Hollow Knight: Silksong</div>
+                        <ul class="features">
+                            <li>Главный миф индустрии</li>
+                            <li>Выдача сразу после оплаты</li>
+                        </ul>
+                    </div>
+                    <div class="footer-flex">
+                        <div class="price">5 ₽</div>
+                        <a href="silksong.html" class="btn">Заказ</a>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- /grid -->
+    </div> <!-- /container -->
+
+    <footer>
+        <p>© 2026 Emporio Shop. Все права защищены.</p>
+        <p style="margin-top: 10px; font-size: 0.8rem; color: #4A4A52; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.4;">
+            Steam является зарегистрированным товарным знаком Valve Corporation. 
+            Данный сайт является независимой торговой витриной, не связан напрямую 
+            с Valve Corporation и не претендует на владение их интеллектуальной собственностью.
+        </p>
+        <p style="margin-top: 15px; font-size: 0.85rem;">
+            Все сделки и оплата проходят строго через независимого гаранта 
+            <a href="https://funpay.com" target="_blank" style="color: #D4AF37; text-decoration: none; font-weight: bold;">
+                Торговую площадку FunPay
+            </a>.
+        </p>
+    </footer>
+
+    <script>
+        // Скрипт для Липкого Логотипа
+        window.addEventListener('scroll', function() {
+            const logoContainer = document.getElementById('logoContainer');
+            const body = document.body;
+            
+            if (window.scrollY > 140) {
+                logoContainer.classList.add('sticky');
+                body.classList.add('scrolled');
+            } else {
+                logoContainer.classList.remove('sticky');
+                body.classList.remove('scrolled');
+                logoContainer.style.transform = ''; 
+                logoContainer.style.left = '';
+            }
+        });
+
+        // Массив мафиозных цитат
+        const quotes = [
+            "🤫 Самый <span>легальный криминал</span>",
+            "🙍‍♂️ Джо в сделку <span>не входил...</span>",
+            "🕶️ Предложения, от которых кошелек <span>не откажется</span>",
+            "💣 Быстрее, чем малыш Томми <span>выпускает обойму</span>",
+            "🩸 Никаких улик. <span>Только гейминг</span>"
+        ];
+
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('randomQuote').innerHTML = randomQuote;
+    </script>
+</body>
+</html>

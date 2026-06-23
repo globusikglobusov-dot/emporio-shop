@@ -1,0 +1,108 @@
+* {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+body {
+  background: #121214;
+  color: #fff;
+  overflow-x: hidden;
+}
+.banner {
+  width: 100%; height: 550px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.str-l, .str-r {
+  position: absolute;
+  width: 80%; height: 140%;
+  background: #1c1c1f;
+  transform: rotate(-25deg);
+  transition: transform 0.1s;
+  z-index: 1;
+}
+.str-l {
+  top: -20%; left: -20%;
+  border-right: 15px solid #2d2d33;
+}
+.str-r {
+  bottom: -20%; right: -20%;
+  border-left: 15px solid #2d2d33;
+}
+.logo-box {
+  position: relative;
+  z-index: 9; width: 100%;
+  display: flex;
+  justify-content: center;
+  transition: all 0.4s;
+}
+.logo {
+  max-height: 240px; /* Размер на баннере */
+  object-fit: contain;
+  transition: all 0.4s;
+}
+.logo-box.sticky {
+  position: fixed; top: 15px; left: 0;
+}
+.logo-box.sticky .logo {
+  max-height: 80px; /* Размер при скролле */
+}
+.badge {
+  background: #1c1c1f;
+  border: 1px solid #D4AF37;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: bold;
+  z-index: 2;
+  transition: opacity 0.3s;
+}
+.badge span { color: #D4AF37; }
+body.scrolled .badge { opacity: 0; }
+.container {
+  max-width: 1200px;
+  margin: 0 auto; padding: 60px 20px;
+}
+h2 {
+  text-align: center; margin-bottom: 50px;
+  border-bottom: 2px solid #D4AF37;
+  display: table; margin: 0 auto 50px;
+  padding-bottom: 12px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 
+    repeat(auto-fit, minmax(280px, 1fr));
+  gap: 35px;
+}
+.card {
+  background: #1C1C1F;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #2D2D33;
+  display: flex; flex-direction: column;
+}
+.card:hover { border-color: #D4AF37; }
+.card-img {
+  width: 100%; height: 380px;
+  object-fit: cover; background: #25252B;
+}
+.info {
+  padding: 25px; display: flex;
+  flex-direction: column; gap: 15px;
+}
+.list { list-style: none; color: #aaa; }
+.flex {
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
+.price { font-size: 1.4rem; color: #D4AF37; }
+.btn {
+  color: #D4AF37; border: 2px solid #D4AF37;
+  text-decoration: none; padding: 10px 20px;
+  border-radius: 6px; font-weight: bold;
+}
+.btn:hover { background: #D4AF37; color: #121214; }
