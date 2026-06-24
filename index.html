@@ -175,6 +175,13 @@
                 height: 250px;
                 box-shadow: inset 0 -40px 60px #121214;
             }
+            /* Жёстко ограничиваем верхний логотип на мобильных */
+            .logo-img {
+                width: 60% !important;        /* Логотип займет ровно 60% от ширины экрана телефона */
+                max-width: 220px !important;  /* Но не станет слишком огромным */
+                height: auto !important;      /* Высота подстроится автоматически без искажений */
+                max-height: 80px !important;  /* Ограничиваем по высоте, чтобы не давил на цитату */
+            }
             /* Железно прячем белую кнопку со стрелкой ТОЛЬКО на смартфонах */
             .logo-container.sticky .sticky-arrow, .sticky-arrow {
                 display: none !important;
