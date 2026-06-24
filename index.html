@@ -175,9 +175,13 @@
                 height: 250px;
                 box-shadow: inset 0 -40px 60px #121214;
             }
-            /* Полностью скрываем белую кнопку со стрелкой */
-            .sticky-arrow {
+            /* Железно прячем белую кнопку со стрелкой ТОЛЬКО на смартфонах */
+            .logo-container.sticky .sticky-arrow, .sticky-arrow {
                 display: none !important;
+                visibility: hidden !important;
+                width: 0 !important;
+                height: 0 !important;
+                opacity: 0 !important;
             }
         }
     </style>
@@ -189,6 +193,8 @@
         <div id="logoContainer" class="logo-container">
             <a href="#top" style="display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none;">
                 <img src="logo.png" alt="Emporio Shop" class="logo-img">
+                <span class="sticky-arrow">🡩</span> <!-- Вернули стрелку на место -->
+            </a>
             </a>
         </div>
         <div class="trust-badge" id="randomQuote"></div>
