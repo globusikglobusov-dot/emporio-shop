@@ -5,439 +5,1138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emporio Shop — Онлайн магазин оффлайн активаций Steam</title>
     
-    <!-- Вот сюда вставляйте тег для иконки: -->
     <link rel="icon" href="/favicon.png" type="image/png">
     <style>
-        /* Плавная прокрутка к топу сайта */
-        html {
-            scroll-behavior: smooth;
-        }
-        * {
-            margin: 0; padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        body {
-            background-color: #121214; 
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #121214; color: #ffffff; overflow-x: hidden; }
         .hero-banner {
-            width: 100%; height: 450px;
-            background: url('banner.jpg') center/cover no-repeat !important;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
+            width: 100%; height: 450px; background: url('banner.jpg') center/cover no-repeat !important;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             position: relative; box-shadow: inset 0 -80px 100px #121214;
         }
-        .logo-container {
-            position: relative; z-index: 9999;
-            transition: all 0.4s ease; margin-bottom: 20px;
-            display: flex; justify-content: center;
-            align-items: center; width: 100%;
-        }
-        .logo-img {
-            max-height: 240px; object-fit: contain;
-            transition: all 0.4s ease;
-            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8));
+        .logo-container { position: relative; z-index: 9999; transition: all 0.4s ease; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; width: 100%; }
+        .logo-img { 
+            max-height: 240px; 
+            object-fit: contain; 
+            transition: all 0.4s ease; 
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8)); 
+            
+            /* --- НАСТРОЙКА ДЛЯ БОЛЬШИХ PNG --- */
+            image-rendering: -webkit-optimize-contrast; /* Убирает мыло в Chrome/Edge */
+            image-rendering: high-quality;             /* Заставляет браузер сжимать картинку качественно, без пикселей */
         }
         .logo-container.sticky {
-    position: fixed;
-    top: 20px; 
-    left: 50%;
-    transform: translateX(-50%) scale(1);
-    margin-bottom: 0;
-    
-    /* Эффект глубокого мафиозного вина с полупрозрачностью */
-    background: linear-gradient(135deg, rgba(189, 8, 28, 0.85), rgba(120, 4, 15, 0.95));
-    
-    /* Размытие заднего плана (эффект дорогого матового стекла) */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    
-    width: max-content;
-    padding: 10px 25px; /* Чуть увеличили отступы по бокам */
-    border-radius: 50px;
-    
-    /* Тонкая золотая рамка (стиль дона) */
-    border: 1px solid rgba(212, 175, 55, 0.4); 
-    
-    /* Тройная тень: объем, мягкое красное свечение и золотой отблеск */
-    box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.6),
-        0 8px 32px rgba(189, 8, 28, 0.35),
-        inset 0 1px 2px rgba(212, 175, 55, 0.2);
-        
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-/* Эффект дыхания капсулы при наведении мыши */
-.logo-container.sticky:hover {
-    transform: translateX(-50%) scale(1.05); /* Капсула слегка увеличивается */
-    border-color: rgba(212, 175, 55, 0.8);    /* Золотая рамка становится ярче */
-    box-shadow: 
-        0 6px 20px rgba(0, 0, 0, 0.7),
-        0 12px 40px rgba(189, 8, 28, 0.5),    /* Неон вспыхивает сильнее */
-        inset 0 1px 3px rgba(212, 175, 55, 0.4);
-}
-        .logo-container.sticky .logo-img {
-            max-height: 50px;
-            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.9));
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) scale(1); margin-bottom: 0;
+            
+            /* Перекрасили в золото из твоего кода */
+            background: linear-gradient(135deg, #FFE066, #D4AF37, #AA7C11);
+            
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); width: max-content; padding: 10px 25px; border-radius: 50px;
+            
+            /* Золотая грань слитка */
+            border: 1px solid #FFF0B3; 
+            
+            /* Золотые тени и глубокое свечение */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(212, 175, 55, 0.4),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.6),
+                        inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+                        
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 15px;
         }
-        
-        /* Черная жирная стрелка в белом кружке */
-        .sticky-arrow {
-            display: none;
-            width: 30px;
-            height: 30px;
-            background-color: #ffffff;
-            color: #000000;
-            border-radius: 50%;
-            justify-content: center;
-            align-items: center;
-            font-weight: 900;
-            font-size: 1.3rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease;
+        .logo-container.sticky:hover { 
+            transform: translateX(-50%) scale(1.05); 
+            /* При наведении золото «горит» ярче */
+            background: linear-gradient(135deg, #FFF0B3, #E6C655, #C59B27);
+            border-color: #ffffff;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7), 
+                        0 0 30px rgba(212, 175, 55, 0.7),
+                        inset 0 3px 6px rgba(255, 255, 255, 0.8);
         }
-        .sticky-arrow:hover {
-            transform: scale(1.1);
+        .logo-container.sticky .logo-img { 
+            max-height: 50px; 
+            
+            /* --- НАСТРОЙКА ДЛЯ СЖАТИЯ ПРИ СКРОЛЛЕ --- */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: high-quality;
+            transform: translateZ(0); /* Отключает микро-размытие видеокарты */
         }
-        .logo-container.sticky .sticky-arrow {
-            display: flex;
-        }
-
-        .trust-badge {
-            background-color: rgba(28, 28, 31, 0.95);
-            border: 1px solid #D4AF37; padding: 12px 30px;
-            border-radius: 50px; font-weight: bold;
-            font-size: 1.1rem; letter-spacing: 1px;
-            box-shadow: 0 4px 25px rgba(212, 175, 55, 0.2);
-            display: inline-flex; align-items: center; gap: 10px;
-            transition: opacity 0.3s ease;
-            text-align: center;
-        }
-        .trust-badge span {
-            color: #D4AF37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-        }
+        .sticky-arrow { display: none; width: 30px; height: 30px; background-color: #ffffff; color: #000000; border-radius: 50%; justify-content: center; align-items: center; font-weight: 900; font-size: 1.3rem; transition: transform 0.2s ease; }
+        .logo-container.sticky .sticky-arrow { display: flex; }
+        .trust-badge { background-color: rgba(28, 28, 31, 0.95); border: 1px solid #D4AF37; padding: 12px 30px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 10px; transition: opacity 0.3s ease; text-align: center; }
+        .trust-badge span { color: #D4AF37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
         body.scrolled .trust-badge { opacity: 0; pointer-events: none; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
-        h2 {
-            text-align: center; font-size: 2rem; margin-bottom: 50px;
-            text-transform: uppercase; letter-spacing: 3px;
-            border-bottom: 2px solid #D4AF37; display: table;
-            margin-left: auto; margin-right: auto; padding-bottom: 12px;
-        }
+        h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 3px; border-bottom: 2px solid #D4AF37; display: table; margin: 0 auto 40px auto; padding-bottom: 12px; }
         
-        /* Сетка товаров */
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        /* Тактическая боковая карта */
+        .mafia-map-wrapper { display: flex; max-width: 1100px; margin: 0 auto; padding: 0 20px; gap: 40px; }
+        .mafia-sidebar-syndicates { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+        .container { flex-grow: 1; padding: 0; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .mafia-route-toggle { display: none; }
         
-        .card {
-            background-color: #1C1C1F; border-radius: 12px; overflow: hidden;
-            border: 1px solid #2D2D33; display: flex; flex-direction: column;
-            transition: all 0.3s ease;
+        .syndicate-folder-label {
+            background: #161619; border-left: 4px solid #2D2D33; color: #888; padding: 14px 18px; cursor: pointer;
+            font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease;
         }
-        .card:hover {
-            border-color: #D4AF37; transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.15);
-        }
+        .syndicate-folder-label:hover { color: #fff; border-left-color: rgba(189, 8, 28, 0.6); background: #1C1C1F; }
         
-        /* Картинки всегда одинаковой высоты */
-        .card-img { 
-            width: 100%; 
-            height: 380px; 
-            max-height: 380px; 
-            object-fit: cover; 
-            object-position: center top;
-            flex-shrink: 0;
+        #tab-all:checked ~ .mafia-map-wrapper label[for="tab-all"],
+        #tab-mafia:checked ~ .mafia-map-wrapper label[for="tab-mafia"],
+        #tab-farcry:checked ~ .mafia-map-wrapper label[for="tab-farcry"],
+        #tab-resident:checked ~ .mafia-map-wrapper label[for="tab-resident"],
+        #tab-silent:checked ~ .mafia-map-wrapper label[for="tab-silent"],
+        #tab-doom:checked ~ .mafia-map-wrapper label[for="tab-doom"],
+        #tab-witcher:checked ~ .mafia-map-wrapper label[for="tab-witcher"],
+        #tab-atomic:checked ~ .mafia-map-wrapper label[for="tab-atomic"],
+        #tab-crimson:checked ~ .mafia-map-wrapper label[for="tab-crimson"],
+        #tab-cars:checked ~ .mafia-map-wrapper label[for="tab-cars"],
+        #tab-stranding:checked ~ .mafia-map-wrapper label[for="tab-stranding"],
+        #tab-hollow:checked ~ .mafia-map-wrapper label[for="tab-hollow"] {
+            background: linear-gradient(90deg, #1C1C21, #121214); border-left-color: #bd081c; color: #fff; box-shadow: -5px 0 15px rgba(189, 8, 28, 0.2);
         }
-        
-        .info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .game-title { font-size: 1.35rem; font-weight: bold; margin-bottom: 12px; }
-        .features { list-style: none; color: #aaa; font-size: 0.9rem; margin-bottom: 25px; }
-        .features li { margin-bottom: 7px; position: relative; padding-left: 18px; }
+
+        .card { background-color: #1C1C1F; border-radius: 8px; overflow: hidden; border: 1px solid #2D2D33; display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .card:hover { border-color: #D4AF37; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1); }
+        .card-img { width: 100%; height: 340px; object-fit: cover; object-position: center top; flex-shrink: 0; }
+        .info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .game-title { font-size: 1.15rem; font-weight: bold; margin-bottom: 10px; }
+        .features { list-style: none; color: #aaa; font-size: 0.85rem; margin-bottom: 20px; }
+        .features li { margin-bottom: 5px; padding-left: 15px; position: relative; }
         .features li::before { content: "✦"; color: #D4AF37; position: absolute; left: 0; }
         .footer-flex { display: flex; align-items: center; justify-content: space-between; }
-        .price { font-size: 1.45rem; font-weight: bold; color: #D4AF37; }
-        .btn {
-            color: #D4AF37; border: 2px solid #D4AF37; text-decoration: none;
-            padding: 10px 20px; border-radius: 6px; font-weight: bold;
-            text-transform: uppercase; font-size: 0.85rem; transition: all 0.2s;
-        }
+        .price { font-size: 1.3rem; font-weight: bold; color: #D4AF37; }
+        .btn { color: #D4AF37; border: 2px solid #D4AF37; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; transition: all 0.2s; }
         .btn:hover { background-color: #D4AF37; color: #121214; }
-        footer { text-align: center; padding: 50px 20px; color: #4A4A52; font-size: 0.9rem; border-top: 1px solid #1C1C1F; margin-top: 80px; }
-        /* Мобильная адаптация для экранов смартфона */
-        @media (max-width: 768px) {
-            /* Уменьшаем высоту баннера на фоне */
-            .hero-banner {
-                height: 280px;
-                box-shadow: inset 0 -40px 60px #121214;
-            }
-            
-            /* 1. БОЛЬШОЙ ВЕРХНИЙ ЛОГОТИП (Когда страница в самом верху) */
-            .logo-container .logo-img {
-                width: 97% !important;        /* Занимает 97% ширины экрана телефона */
-                max-width: 420px !important;  
-                height: auto !important;
-                max-height: 220px !important; /* Оптимальный крупный размер */
-            }
+        .badge-favorite { display: inline-block; background-color: #ffb703; color: #1a1a1a; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 4px; margin-top: 6px; text-transform: uppercase; }
 
-            /* 2. МАЛЕНЬКИЙ ЛОГОТИП (Включается ТОЛЬКО при скролле внутри красной капсулы) */
-            .logo-container.sticky .logo-img {
-                width: auto !important;
-                max-height: 45px !important;  /* Вот теперь он сожмется только при движении */
-            }
+        #tab-mafia:checked ~ .mafia-map-wrapper .card:not(.fran-mafia),
+        #tab-farcry:checked ~ .mafia-map-wrapper .card:not(.fran-farcry),
+        #tab-resident:checked ~ .mafia-map-wrapper .card:not(.fran-resident),
+        #tab-silent:checked ~ .mafia-map-wrapper .card:not(.fran-silent),
+        #tab-doom:checked ~ .mafia-map-wrapper .card:not(.fran-doom),
+        #tab-witcher:checked ~ .mafia-map-wrapper .card:not(.fran-witcher),
+        #tab-atomic:checked ~ .mafia-map-wrapper .card:not(.fran-atomic),
+        #tab-crimson:checked ~ .mafia-map-wrapper .card:not(.fran-crimson),
+        #tab-cars:checked ~ .mafia-map-wrapper .card:not(.fran-cars),
+        #tab-stranding:checked ~ .mafia-map-wrapper .card:not(.fran-stranding),
+        #tab-hollow:checked ~ .mafia-map-wrapper .card:not(.fran-hollow) { display: none !important; }
 
-            /* Железно прячем белую кнопку со стрелкой ТОЛЬКО на смартфонах */
-            .logo-container.sticky .sticky-arrow, .sticky-arrow {
-                display: none !important;
-                visibility: hidden !important;
-                width: 0 !important;
-                height: 0 !important;
-                opacity: 0 !important;
-            }
+        @media (max-width: 868px) {
+            .mafia-map-wrapper { flex-direction: column; gap: 20px; }
+            .mafia-sidebar-syndicates { width: 100%; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+            .syndicate-folder-label { width: 48%; padding: 12px; font-size: 0.75rem; border-left: none; border-bottom: 3px solid #2D2D33; text-align: center; }
+            .grid { grid-template-columns: 1fr; }
+            #tab-mafia:checked ~ .mafia-map-wrapper label[for="tab-mafia"],
+            #tab-farcry:checked ~ .mafia-map-wrapper label[for="tab-farcry"],
+            #tab-resident:checked ~ .mafia-map-wrapper label[for="tab-resident"],
+            #tab-silent:checked ~ .mafia-map-wrapper label[for="tab-silent"],
+            #tab-doom:checked ~ .mafia-map-wrapper label[for="tab-doom"],
+            #tab-witcher:checked ~ .mafia-map-wrapper label[for="tab-witcher"],
+            #tab-atomic:checked ~ .mafia-map-wrapper label[for="tab-atomic"],
+            #tab-crimson:checked ~ .mafia-map-wrapper label[for="tab-crimson"],
+            #tab-cars:checked ~ .mafia-map-wrapper label[for="tab-cars"],
+            #tab-stranding:checked ~ .mafia-map-wrapper label[for="tab-stranding"],
+            #tab-hollow:checked ~ .mafia-map-wrapper label[for="tab-hollow"] { border-left-color: transparent; border-bottom-color: #bd081c; }
         }
-        
-.badge-favorite {
-    display: inline-block;
-    background-color: #ffb703; /* Красивый золотой/желтый цвет */
-    color: #1a1a1a;            /* Темный текст для контраста */
-    font-size: 12px;
+/* Контейнер для вертикального потока (Сужен и сдвинут влево) */
+.mafia-vertical-ticker {
+    width: 100%;
+    max-width: 420px; /* Сузили блок: теперь он чуть шире самих карточек (380px) */
+    height: 750px; 
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #2D2D33;
+    border-radius: 12px;
+    background: #141416;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    margin: 0; /* Убрали auto-выравнивание, чтобы блок жестко встал слева вплотную к разделам */
+    display: none; /* Логика JS включает его только на вкладке "Все Сферы" */
+}
+
+/* Затемнение сверху и снизу для эффекта кино */
+.mafia-vertical-ticker::before,
+.mafia-vertical-ticker::after {
+    content: "";
+    position: absolute; left: 0; right: 0; height: 80px; z-index: 2;
+    pointer-events: none;
+}
+.mafia-vertical-ticker::before { top: 0; background: linear-gradient(to bottom, #141416, transparent); }
+.mafia-vertical-ticker::after { bottom: 0; background: linear-gradient(to top, #141416, transparent); }
+
+/* Движущаяся вертикальная дорожка (Выравниваем по центру) */
+.mafia-vertical-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем карточки внутри контейнера */
+    gap: 30px;
+    animation: mafiaVerticalScroll 25s linear infinite;
+}
+
+/* Фиксируем размеры карточек ИМЕННО внутри вертикальной ленты под стандарт обычной сетки */
+.mafia-vertical-track .card {
+    width: 380px;         /* Ровно такая же ширина, как у карточек в обычной сетке */
+    max-width: 380px;
+    height: 495px;        /* Фиксированная стандартная высота карточки */
+    max-height: 495px;
+}
+
+/* Подгоняем высоту картинок внутри ленты под новые пропорции карточки */
+.mafia-vertical-track .card .card-img {
+    height: 260px;
+    max-height: 260px;
+}
+
+/* Остановка ленты при наведении курсора */
+.mafia-vertical-ticker:hover .mafia-vertical-track {
+    animation-play-state: paused;
+}
+
+/* Модификация сетки для обычных разделов */
+#tab-all:checked ~ .mafia-map-wrapper .grid {
+    display: none !important; /* Полностью убираем ручную сетку со вкладки "Все Сферы" */
+}
+
+/* Анимация бесконечного сдвига вверх (сдвигаем ровно на высоту первой половины карточек с учетом отступов) */
+@keyframes mafiaVerticalScroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-495px * 3 - 30px * 3)); } 
+}
+
+/* ЛОГИКА: Прячем вертикальную ленту, если выбрана конкретная франшиза */
+#tab-mafia:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-farcry:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-resident:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-silent:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-doom:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-witcher:checked ~ .mafia-map-wrapper .mafia-ticker-container, /* на всякий случай */
+#tab-witcher:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-atomic:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-crimson:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-cars:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-stranding:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+#tab-hollow:checked ~ .mafia-map-wrapper .mafia-vertical-ticker {
+    display: none !important;
+}
+
+/* Адаптивность под мобильные телефоны */
+@media (max-width: 768px) {
+    .mafia-vertical-ticker { height: 550px; padding: 10px; }
+    .mafia-vertical-track .card { 
+        width: 100%; 
+        max-width: 100%; 
+        height: auto; 
+        max-height: none; 
+    }
+    .mafia-vertical-track .card .card-img {
+        height: 340px;
+        max-height: 340px;
+    }
+    @keyframes mafiaVerticalScroll {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-50%); } /* На мобилках используем процентный сдвиг из-за резиновой высоты */
+    }
+}
+/* Основной контейнер для блока FAQ */
+.mafia-faq-block {
+    flex-grow: 1;
+    max-width: 600px;
+    background: #161619;
+    border: 1px solid #2D2D33;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    align-self: flex-start;
+}
+
+/* Заголовок FAQ в стиле секретных папок */
+.mafia-faq-block h3 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    color: #D4AF37;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #bd081c;
+    padding-bottom: 10px;
+}
+
+/* Элемент аккордеона (вопрос-ответ) */
+.faq-item {
+    border-bottom: 1px solid #2D2D33;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+.faq-item:last-child {
+    border: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Скрытый чекбокс для работы аккордеона БЕЗ JavaScript */
+.faq-input {
+    display: none;
+}
+
+/* Стиль вопроса (кнопка-label) */
+.faq-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    margin-top: 8px;           /* Отступ сверху от списка */
-    text-transform: uppercase; /* Все буквы заглавные */
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
+    transition: color 0.2s;
+}
+.faq-trigger:hover {
+    color: #D4AF37;
+}
+
+/* Иконка стрелочки */
+.faq-trigger::after {
+    content: "➘";
+    color: #bd081c;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+/* Контейнер с текстом ответа (по умолчанию скрыт) */
+.faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+    color: #aaa;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 0;
+}
+
+/* МАГИЯ ЧЕКБОКСОВ: Открываем ответ при клике */
+.faq-input:checked ~ .faq-content {
+    max-height: 500px;
+    margin-top: 12px;
+    transition: max-height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
+}
+
+/* Поворачиваем стрелочку при раскрытии */
+.faq-input:checked ~ .faq-trigger::after {
+    transform: rotate(-180deg);
+    color: #D4AF37;
+}
+
+/* ЛОГИКА: Прячем FAQ намертво во всех разделах, кроме "Все Сферы" */
+#tab-mafia:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-farcry:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-resident:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-silent:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-doom:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-witcher:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-atomic:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-crimson:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-cars:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-stranding:checked ~ .mafia-map-wrapper .mafia-faq-block,
+#tab-hollow:checked ~ .mafia-map-wrapper .mafia-faq-block {
+    display: none !important;
+}
+
+/* Адаптация под мобильные версии */
+@media (max-width: 868px) {
+    .mafia-faq-block { max-width: 100%; width: 100%; }
+}
+/* Жесткое и надежное позиционирование без ломающихся флексов */
+#tab-all:checked ~ .mafia-map-wrapper .container {
+    display: block !important; /* Возвращаем стандартный блочный режим контейнеру */
+    position: relative !important;
+}
+
+/* Лента жестко стоит на своем месте слева */
+#tab-all:checked ~ .mafia-map-wrapper .mafia-vertical-ticker {
+    display: block !important;
+    float: left !important; /* Прижимаем намертво влево к разделам */
+    width: 380px !important;
+    min-width: 380px !important;
+    margin: 0 !important;
+}
+
+/* Блок FAQ встает строго справа и на самом верху */
+#tab-all:checked ~ .mafia-map-wrapper .mafia-faq-block {
+    display: block !important;
+    float: right !important; /* Уносим намертво в правую сторону */
+    width: calc(100% - 420px) !important; /* Занимает всё оставшееся место, кроме ленты */
+    max-width: 760px !important;
+    margin-top: 0 !important; /* Жестко прижимаем к самому верху */
+}
+
+/* Сброс обтекания, чтобы подвал сайта не улетал наверх */
+.mafia-map-wrapper::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Мобильная адаптация: на телефонах возвращаем всё в одну аккуратную колонну */
+@media (max-width: 868px) {
+    #tab-all:checked ~ .mafia-map-wrapper .mafia-vertical-ticker,
+    #tab-all:checked ~ .mafia-map-wrapper .mafia-faq-block {
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 30px !important;
+    }
+}
+/* --- СТИЛИ ДЛЯ КАРТОЧЕК «НЕТ В НАЛИЧИИ» --- */
+
+/* Контейнер карточки, когда товар закончился */
+.card.out-of-stock {
+    position: relative;
+    pointer-events: none; /* Отключаем кликабельность кнопки «Заказ» */
+    border-color: #222224 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Накладываем мрачный блэкаут на картинку игры */
+.card.out-of-stock .card-img {
+    filter: grayscale(1) brightness(0.3); /* Делаем обложку черно-белой и темной */
+    transition: all 0.3s ease;
+}
+
+/* Смягчаем яркость текста описания */
+.card.out-of-stock .info {
+    opacity: 0.4;
+}
+
+/* Сама плашка-индикатор «ПРОДАНO» поверх картинки */
+.card.out-of-stock::before {
+    content: "✖ НЕТ В НАЛИЧИИ ✖";
+    position: absolute;
+    top: 170px; /* Размещаем ровно по центру обложки игры */
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-5deg); /* Слегка наклоняем для брутальности */
+    background: linear-gradient(135deg, #bd081c, #78040f); /* Мафиозный красный градиент */
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: 1px solid #D4AF37; /* Золотая каемка Emporio */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6), 0 0 10px rgba(189, 8, 28, 0.4);
+    z-index: 5;
+}
+
+/* Принудительно меняем стиль кнопки на «Заблокировано» */
+.card.out-of-stock .btn {
+    background: #121214 !important;
+    color: #4A4A52 !important;
+    border-color: #2D2D33 !important;
+    text-shadow: none !important;
+}
+/* --- ПРОДВИНУТЫЙ ДИЗАЙН ПЛАШЕК ИЗДАНИЙ --- */
+.edition-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-right: 10px;
+    vertical-align: middle;
+    position: relative;
+    user-select: none;
+    
+    /* Текстура легкого глянца и объемные тени */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.5), 
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* 💠 DELUXE: Матовый Кибер-Титан (Глубокий стальной с неоново-бирюзовым контуром) */
+.edition-tag.deluxe {
+    background: linear-gradient(145deg, #2c3e50, #0f171e);
+    color: #00f2fe; /* Светящийся бирюзовый текст */
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.5), 
+        0 0 8px rgba(0, 242, 254, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* 👑 GOLD: Кованое Золото (Темно-янтарная подложка с раскаленным золотым градиентом сверху) */
+.edition-tag.gold {
+    background: linear-gradient(145deg, #1e1503, #0a0701);
+    color: #f39c12; /* Насыщенный золотой текст */
+    border: 1px solid rgba(243, 156, 18, 0.35);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.5), 
+        0 0 10px rgba(243, 156, 18, 0.2),
+        inset 0 1px 1px rgba(243, 156, 18, 0.2);
+}
+
+/* 🩸 ULTIMATE: Кровавый Синдикат (Угольно-черный с глубоким рубиновым свечением и огненным текстом) */
+.edition-tag.ultimate {
+    background: linear-gradient(145deg, #1a0205, #050001);
+    color: #ff3344; /* Кроваво-алый неоновый текст */
+    border: 1px solid rgba(255, 51, 68, 0.35);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.6), 
+        0 0 12px rgba(255, 51, 68, 0.25),
+        inset 0 1px 1px rgba(255, 51, 68, 0.2);
+}
+/* 🏆 GOTY: Триумф Года (Глубокий изумрудно-платиновый с неоновым зеленым отсветом) */
+.edition-tag.goty {
+    background: linear-gradient(145deg, #0d2319, #030a07);
+    color: #2ecc71; /* Яркий изумрудный текст */
+    border: 1px solid rgba(46, 204, 113, 0.35);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.5), 
+        0 0 10px rgba(46, 204, 113, 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
     </style>
 </head>
 <body id="top">
+    <!-- Наш новый живой слой, который будет двигаться сзади контента -->
 
-    <!-- Фоновый баннер -->
+    <!-- Скрытые переключатели тактической карты франшиз -->
+    <input type="radio" name="mafia_dep" id="tab-all" class="mafia-route-toggle" checked>
+    <input type="radio" name="mafia_dep" id="tab-mafia" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-farcry" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-resident" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-silent" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-doom" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-witcher" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-atomic" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-crimson" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-cars" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-stranding" class="mafia-route-toggle">
+    <input type="radio" name="mafia_dep" id="tab-hollow" class="mafia-route-toggle">
+    
     <section class="hero-banner">
         <div id="logoContainer" class="logo-container">
             <a href="#top" style="display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none;">
                 <img src="logo.png" alt="Emporio Shop" class="logo-img">
-                <span class="sticky-arrow">🡩</span> <!-- Вернули стрелку на место -->
+                <span class="sticky-arrow">🡩</span>
             </a>
         </div>
         <div class="trust-badge" id="randomQuote"></div>
     </section>
 
-    <!-- Список игр -->
-    <div class="container">
-        <h2>Доступные активации</h2>
-        <div class="grid">
+    <div class="mafia-map-wrapper">
+        <div class="mafia-sidebar-syndicates">
+            <label for="tab-all" class="syndicate-folder-label">Меню</label>
+            <label for="tab-mafia" class="syndicate-folder-label">Mafia</label>
+            <label for="tab-farcry" class="syndicate-folder-label">Far Cry</label>
+            <label for="tab-resident" class="syndicate-folder-label">Resident Evil</label>
+            <label for="tab-silent" class="syndicate-folder-label">Silent Hill</label>
+            <label for="tab-doom" class="syndicate-folder-label">DOOM</label>
+            <label for="tab-witcher" class="syndicate-folder-label">Ведьмак</label>
+            <label for="tab-atomic" class="syndicate-folder-label">Atomic Heart</label>
+            <label for="tab-crimson" class="syndicate-folder-label">Crimson Desert</label>
+            <label for="tab-cars" class="syndicate-folder-label">My Cars</label>
+            <label for="tab-stranding" class="syndicate-folder-label">Death Stranding</label>
+            <label for="tab-hollow" class="syndicate-folder-label">Hollow Knight</label>
+        </div>
 
-<!-- 1. Mafia -->
-<div class="card">
-    <img src="https://cdn.igm.gg/PROD/202507/74360a72/2.png" alt="Mafia" class="card-img" loading="lazy">
-    <div class="info">
-        <div>
-            <div class="game-title">Mafia: The old country Deluxe Edition</div>
-            <ul class="features">
-                <li>Deluxe версия бандитских утех</li>
-                <li>Моментальная выдача</li>
-            </ul>
-            <!-- Добавленная плашка -->
-            <div class="badge-favorite">★ Фаворит Emporio</div>
-        </div>
-        <div class="footer-flex">
-            <div class="price">25 ₽</div>
-            <a href="mafia.html" class="btn">Заказ</a>
-        </div>
-    </div>
+        <div class="container">
+            <h2>Оффлайн активации</h2>
+
+<!-- Автоматический мафиозный поток (Жестко зажат на 380px слева) -->
+<div id="mafiaVerticalTicker" class="mafia-vertical-ticker" style="width: 380px !important; min-width: 380px !important; max-width: 380px !important; float: left !important; margin: 0 !important; display: none;">
+    <div id="mafiaVerticalTrack" class="mafia-vertical-track"></div>
 </div>
 
-            <!-- 2. Far Cry -->
-            <div class="card">
-                <img src="far-cry-5-pc-game-ubisoft-connect-europe-cover.jpg" alt="Far cry" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Far Cry (Части от 2-5 + New Dawn)</div>
-                        <ul class="features">
-                            <li>Страны, банды, пушки, тачки</li>
-                            <li>Пожизненная гарантия</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">15 ₽</div>
-                        <a href="farcry.html" class="btn">Заказ</a>
+<!-- Секретный архив Консильери (Принудительно развернут вширь на 650px справа) -->
+<div class="mafia-faq-block" style="width: 330px !important; min-width: 330px !important; max-width: 650px !important; float: right !important; margin-top: 0 !important; display: none; box-sizing: border-box !important;">
+    <h3>FAQ: Ответы на распространенные вопросы</h3>
+    
+    <!-- Вопрос 1 -->
+    <div class="faq-item">
+        <input type="checkbox" id="faq-1" class="faq-input">
+        <label for="faq-1" class="faq-trigger">Что такое оффлайн активация?</label>
+        <div class="faq-content">
+            <p>Вы получаете доступ к нашему легальному Steam-аккаунту с купленной игрой. Скачиваете её, переводите лаунчер в автономный (оффлайн) режим и играете в полноценную сюжетку без лимитов времени.</p>
+        </div>
+    </div>
+
+    <!-- Вопрос 2 -->
+    <div class="faq-item">
+        <input type="checkbox" id="faq-2" class="faq-input">
+        <label for="faq-2" class="faq-trigger">Меня могут забанить в Steam?</label>
+        <div class="faq-content">
+            <p>Исключено. Оффлайн-режим работает локально на твоем ПК и никак не нарушает правила безопасности Valve. Никаких читов или сторонних программ — только чистая игра. Сделка полностью чистая.</p>
+        </div>
+    </div>
+
+    <!-- Вопрос 3 -->
+    <div class="faq-item">
+        <input type="checkbox" id="faq-3" class="faq-input">
+        <label for="faq-3" class="faq-trigger">Когда переводить Steam в автономный режим?</label>
+        <div class="faq-content">
+            <p>Игра скачивается в онлайн режиме. Автономный включается тогда, когда вы хотите запустить игру</p>
+        </div>
+    </div>
+
+    <!-- Вопрос 4 -->
+    <div class="faq-item">
+        <input type="checkbox" id="faq-4" class="faq-input">
+        <label for="faq-4" class="faq-trigger">Мои сохранения останутся нетронутыми</label>
+        <div class="faq-content">
+            <p>Да, конечно, просто заходите в свойства игры и находите раздел Steam cloud. Если он включен - выключаете и ваши сохранения будут только вашими</p>
+        </div>
+    </div>
+
+    <!-- Вопрос 5 -->
+    <div class="faq-item">
+        <input type="checkbox" id="faq-5" class="faq-input">
+        <label for="faq-5" class="faq-trigger">Почему такие маленькие цены?</label>
+        <div class="faq-content">
+            <p>Один аккаунт может активировать целая куча игроков, поэтому расходы делятся на всех. Вы не переплачиваете из 4000+ рублей за один вечер, а забираешь товар по цене булки хлеба.</p>
+        </div>
+    </div>
+
+</div> <!-- /mafia-faq-block -->
+    <div class="grid">
+        <!-- Дальше идут твои 45 карточек игр (Блоки 2, 3 и 4) -->
+
+                <!-- 1. Silent Hill 2 (Франшиза: Silent Hill) -->
+                <div class="card fran-silent">
+                    <img src="sh2.jpg" alt="SH2" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Silent Hill 2 Remake</div>
+                            <ul class="features"><li>Легендарный психологический хоррор Конами</li><li>Пожизненная техническая поддержка доступа</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">15 ₽</div><a href="sh2.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-             <!-- 3. ВЕДЬМАК -->
-            <div class="card">
-                <img src="https://static.cdprojektred.com/cms.cdprojektred.com/1c7635eea10a6aaf4cac74a27e765988db8f6912.png" alt="Witcher" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Ведьмак: Все части + DLC</div>
-                        <ul class="features">
-                            <li>Полная антология Геральта с добавкой</li>
-                            <li>Моментальная автовыдача 24/7</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">5 ₽</div>
-                        <a href="witcher.html" class="btn">Заказ</a>
+                <!-- 2. Silent Hill f (Франшиза: Silent Hill) -->
+                <div class="card fran-silent">
+                    <img src="shf.jpg" alt="SHf" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Silent Hill f</div>
+                            <ul class="features"><li>Япония 1960-х годов и кошмары тумана</li><li>Выдача сразу в день релиза игры</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">20 ₽</div><a href="shf.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 4. DEATH STRANDING 2 -->
-            <div class="card">
-                <img src="https://www.kojimaproductions.jp/sites/default/files/styles/max_2600x2600/public/2026-03/coverimage_nocopy_mobile.jpg?itok=Kdc7eH4n" alt="DS2" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Death Stranding 2: On the Beach</div>
-                        <ul class="features">
-                            <li>Долгожданный шедевр Кодзимы</li>
-                            <li>Быстро и четко</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">20 ₽</div>
-                        <a href="ds2.html" class="btn">Заказ</a>
+
+                <!-- 3. Silent Hill Homecoming (Франшиза: Silent Hill) -->
+                <div class="card fran-silent">
+                    <img src="shhomecomingpic.jpg" alt="SHH" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Silent Hill: Homecoming</div>
+                            <ul class="features"><li>Возвращение Алекса Шепарда в Шепардс-Глен</li><li>Моментальная автовыдача 24/7</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="shhomecoming.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 5. DOOM -->
-            <div class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKcigwwr-vHmg4cUnt-XVOfuR_H0qJniIHbyUYfxHem3zGD82KtOIGbAc&s=10" alt="Doom" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Doom: Dark Ages + Eternal</div>
-                        <ul class="features">
-                            <li>Premium новинка + Eternal</li>
-                            <li>Моментальная выдача</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">20 ₽</div>
-                        <a href="doom.html" class="btn">Заказ</a>
+                <!-- 4. Resident Evil 0 (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re0.jpg" alt="RE0" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil 0 (HD Remaster)</div>
+                            <ul class="features"><li>Тайна крушения поезда в Арклейских горах</li><li>Полный чистый оффлайн режим Steam</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="re0.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 6. ATOMIC HEART -->
-            <div class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwZROOhPHqXfFnQrPHpXM-jc7_OBp-l7cLN6zMTGdm8g&s=10" alt="Atomic" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Atomic Heart (Ultimate Edition)</div>
-                        <ul class="features">
-                            <li>Все вышедшие DLC в Steam</li>
-                            <li>Пожизненная гарантия</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">20 ₽</div>
-                        <a href="atomicheart.html" class="btn">Заказ</a>
+                <!-- 5. Resident Evil 1 (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re1.jpg" alt="RE1" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil 1 (HD Remaster)</div>
+                            <ul class="features"><li>Исследование жуткого особняка Спенсера</li><li>Пожизненная железная гарантия на аккаунт</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="re1.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 7. CRIMSON DESERT -->
-            <div class="card">
-                <img src="https://s1.pearlcdn.com/cd/brand/metatag/2025/09/25/7512ae3e8fa20250925065832812.jpg" alt="Crimson desert" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Crimson Desert</div>
-                        <ul class="features">
-                            <li>Экшен-RPG нового поколения</li>
-                            <li>Консильери на связи</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">30 ₽</div>
-                        <a href="crimsondesert.html" class="btn">Заказ</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8. SILENT HILL -->
-            <div class="card">
-                <img src="https://avatars.mds.yandex.net/get-mpic/13894603/2a00000199d7f66a78a7e71c2fe0f154d6d8/orig" alt="SH" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Silent Hill: f + 2 + Homecoming</div>
-                        <ul class="features">
-                            <li>Мрачная классика и ремейки</li>
-                            <li>Чистое сокровище</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">5 ₽</div>
-                        <a href="silenthill.html" class="btn">Заказ</a>
+<!-- 6. Resident Evil 2 Remake (Франшиза: Resident Evil) -->
+<div class="card fran-resident">
+    <img src="re2.jpg" alt="RE2" class="card-img" loading="lazy">
+    <div class="info">
+        <div>
+            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Resident Evil 2 (Remake)</div>
+            <ul class="features"><li>Побег Леона и Клэр из полицейского участка</li><li>Настройка и запуск всего за 2 минуты</li></ul>
+        </div>
+        <div class="footer-flex"><div class="price">10 ₽</div><a href="re2.html" class="btn">Заказ</a></div>
+    </div>
+</div>
+                <!-- 7. Resident Evil 3 Remake (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re3.jpg" alt="RE3" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil 3 (Remake)</div>
+                            <ul class="features"><li>Выживание Джилл Валентайн против Немезиса</li><li>Все побеги и схватки с легендарным тираном</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="re3.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 9. SILKSONG -->
-            <div class="card">
-                <img src="https://korobok.store/upload/iblock/6a3/49g9znho8yzylj1a045xr67hcsxiuh3b.webp" alt="Silksong" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Hollow knight + Hollow Knight: Silksong</div>
-                        <ul class="features">
-                            <li>Главные кукловоды метроидваний</li>
-                            <li>Выдача сразу после оплаты</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">5 ₽</div>
-                        <a href="silksong.html" class="btn">Заказ</a>
+                <!-- 8. Resident Evil 4 Remake (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re4.jpg" alt="RE4" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag gold">Gold</span>Resident Evil 4 (Remake)</div>
+                            <ul class="features"><li>Спасение дочери президента в Испании Леоном</li><li>Максимальное издание, включая DLC Separate Ways</li></ul>
+                            <div class="badge-favorite">★ Топ Продаж</div>
+                        </div>
+                        <div class="footer-flex"><div class="price">15 ₽</div><a href="re4.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 10. RESIDENT EVIL -->
-            <div class="card">
-                <img src="https://upload.wikimedia.org/wikipedia/ru/6/62/Resident_Evil_4_remake.png" alt="RE" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">Resident Evil (Части 2 - 8)</div>
-                        <ul class="features">
-                            <li>(Почти) полный пак хорроров Steam</li>
-                            <li>Пожизненная гарантия</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">5 ₽</div>
-                        <a href="re.html" class="btn">Заказ</a>
+                <!-- 9. Resident Evil 5 (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re5.jpg" alt="RE5" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag gold">Gold</span>Resident Evil 5</div>
+                            <ul class="features"><li>Крис и Шева против паразитов Лас-Плагас</li><li>Издание со всеми сюжетными дополнениями</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="re5.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 11. MY SUMMER / WINTER CAR -->
-            <div class="card">
-                <img src="MySummerCar.jpeg" alt="Cars" class="card-img" loading="lazy">
-                <div class="info">
-                    <div>
-                        <div class="game-title">My Summer + My Winter Car</div>
-                        <ul class="features">
-                            <li>Машина — друг человека</li>
-                            <li>Моментальная выдача</li>
-                        </ul>
-                    </div>
-                    <div class="footer-flex">
-                        <div class="price">5 ₽</div>
-                        <a href="carbundle.html" class="btn">Заказ</a>
+                <!-- 10. Resident Evil 6 (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="Re6.jpg" alt="RE6" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil 6</div>
+                            <ul class="features"><li>4 масштабные переплетающиеся кампании</li><li>Надежный оффлайн режим без сброса активации</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="re6.html" class="btn">Заказ</a></div>
                     </div>
                 </div>
-            </div>
 
-        </div> <!-- /grid -->
-    </div> <!-- /container -->
+                <!-- 11. Resident Evil 7 (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re7.jpg" alt="RE7" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil 7: Biohazard</div>
+                            <ul class="features"><li>Исследование жуткого дома безумной семьи Бейкер</li><li>Включено дополнение Not a Hero</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="re7.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
 
-    <footer>
-        <p>© 2026 Emporio Shop. Все права защищены.</p>
+                <!-- 12. Resident Evil 8 Village (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="re8.jpg" alt="RE8" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil Village</div>
+                            <ul class="features"><li>Финал истории Итана Уинтерса</li><li>Автоматическая выдача данных 24/7</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="re8.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 13. Resident Evil Revelations (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="rerev.jpg" alt="RER1" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Resident Evil: Revelations</div>
+                            <ul class="features"><li>Кошмары Джилл Крис на заброшенном лайнере</li><li>Быстрое скачивание и старт игры</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="rerev.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 14. Resident Evil Revelations 2 (Франшиза: Resident Evil) -->
+                <div class="card fran-resident">
+                    <img src="rerev2.jpg" alt="RER2" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Resident Evil: Revelations 2</div>
+                            <ul class="features"><li>Все эпизоды приключения Клэр и Барри на острове</li><li>Абсолютно безопасное подключение аккаунта</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="rerev2.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 15. Atomic Heart Ultimate (Франшиза: Atomic Heart) -->
+                <div class="card fran-atomic">
+                    <img src="atomicult.jpg" alt="AH_Ult" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag ultimate">Ultimate</span>Atomic Heart</div>
+                            <ul class="features"><li>Советский ретро-футуризм и абсолютно все DLC</li><li>Премиум-запуск лаунчера Steam без очередей</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">20 ₽</div><a href="atomicult.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 16. Atomic Heart Standart (Франшиза: Atomic Heart) -->
+                <div class="card fran-atomic">
+                    <img src="atomic.jpg" alt="AH_Std" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Atomic Heart</div>
+                            <ul class="features"><li>Базовая версия штурма Предприятия 3826</li><li>Быстрая выдача сразу после оплаты</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="atomic.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+                <!-- 17. Far Cry 1 (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcry.jpg" alt="FC1" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Far Cry 1</div>
+                            <ul class="features"><li>Тропический шутер, с которого всё началось</li><li>Быстрый и безопасный оффлайн-запуск</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="farcry.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 18. Far Cry 2 (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcry2.jpg" alt="FC2" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Far Cry 2</div>
+                            <ul class="features"><li>Реалистичное выживание в опасной Африке</li><li>Моментальная автовыдача доступа 24/7</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="farcry2.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 19. Far Cry 3 Deluxe (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcry3.jpeg" alt="FC3" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Far Cry 3</div>
+                            <ul class="features"><li>Безумный архипелаг Вааса Монтенегро</li><li>Все DLC и бонусное оружие уже открыты</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="farcry3.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 20. Far Cry 4 Gold (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcry4.jpg" alt="FC4" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag gold">Gold</span>Far Cry 4</div>
+                            <ul class="features"><li>Гражданская война в заснеженном Кирате</li><li>Включен Season Pass и Долина Йети</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="farcry4.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 21. Far Cry 5 Gold (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcry5.jpg" alt="FC5" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag gold">Gold</span>Far Cry 5</div>
+                            <ul class="features"><li>Борьба с сектантами Иосифа Сида в Монтане</li><li>Пожизненная техническая поддержка аккаунта</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">15 ₽</div><a href="farcry5.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 22. Far Cry 6 GOTY (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcry6.jpg" alt="FC6" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag goty">GOTY</span>Far Cry 6</div>
+                            <ul class="features"><li>Тропический рай Яры Антона Кастильо</li><li>Все сюжетные дополнения и кроссоверы</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">20 ₽</div><a href="farcry6.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 23. Far Cry New Dawn Deluxe (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcrynd.jpg" alt="FCND" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Far Cry: New Dawn</div>
+                            <ul class="features"><li>Постапокалиптический округ Хоуп спустя годы</li><li>Эксклюзивные наборы яркой неоновой техники</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">15 ₽</div><a href="farcrynd.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 24. Far Cry Primal (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcryprimal.jpg" alt="FCP" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag gold">Apex</span>Far Cry: Primal</div>
+                            <ul class="features"><li>Каменный век и приручение мамонтов</li><li>Полная оффлайн-версия со всеми DLC</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="farcryprimal.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 25. Far Cry Blood Dragon (Франшиза: Far Cry) -->
+                <div class="card fran-farcry">
+                    <img src="farcrybd.jpg" alt="FCBD" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Far Cry 3: Blood Dragon</div>
+                            <ul class="features"><li>Кибер-боевик в стиле безумного неонового ретро</li><li>Моментальная выдача данных на ПК</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="farcrybd.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+                <!-- 26. Doom Dark Ages Premium (Франшиза: DOOM) -->
+                <div class="card fran-doom">
+                    <img src="doomages.jpg" alt="DoomDA" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag ultimate">Premium</span>Doom: The Dark Ages</div>
+                            <ul class="features"><li>Тёмное средневековое прошлое Палача Рока</li><li>Доступ к аккаунту без очередей</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">25 ₽</div><a href="doomages.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 27. Doom Eternal (Франшиза: DOOM) -->
+                <div class="card fran-doom">
+                    <img src="doometernal.jpg" alt="DoomEternal" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Doom Eternal</div>
+                            <ul class="features"><li>Ад на Земле и филигранное истребление демонов</li><li>Пожизненная техническая поддержка лаунчера</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">15 ₽</div><a href="doometernal.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 28. Doom 2016 (Франшиза: DOOM) -->
+                <div class="card fran-doom">
+                    <img src="doom.jpg" alt="Doom2016" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Doom (2016)</div>
+                            <ul class="features"><li>Легендарный перезапуск мясного шутера на Марсе</li><li>Автовыдача ключей и файлов настройки сразу</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="doom.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 29. Mafia The Old Country Deluxe (Франшиза: Mafia) -->
+                <div class="card fran-mafia">
+                    <img src="mafiatoc.jpg" alt="MafiaTOC" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Mafia: The Old Country</div>
+                            <ul class="features"><li>Зарождение сицилийских синдикатов и семей</li><li>Моментальная оффлайн-выдача на аккаунт</li></ul>
+                            <div class="badge-favorite">★ Контракт Дона</div>
+                        </div>
+                        <div class="footer-flex"><div class="price">25 ₽</div><a href="mafiatoc.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 30. Mafia Definitive Edition (Франшиза: Mafia) -->
+                <div class="card fran-mafia">
+                    <img src="mafia.jpg" alt="Mafia1" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Mafia: Definitive Edition</div>
+                            <ul class="features"><li>Обновленная история Томи Анджело в Лост-Хэвен</li><li>Чистая оффлайн-активация Steam аккаунта</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">15 ₽</div><a href="mafia.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 31. Mafia 2 Definitive Edition (Франшиза: Mafia) -->
+                <div class="card fran-mafia">
+                    <img src="mafia2.jpg" alt="Mafia2" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Mafia II: Definitive Edition</div>
+                            <ul class="features"><li>Приключения Вито Скалетта в Эмпайр-Бэй</li><li>Все сюжетные DLC уже вшиты в сборку</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="mafia2.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 32. Mafia 3 Definitive Edition (Франшиза: Mafia) -->
+                <div class="card fran-mafia">
+                    <img src="mafia3.jpg" alt="Mafia3" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Mafia III: Definitive Edition</div>
+                            <ul class="features"><li>Криминальная империя Линкольна Клея в Нью-Бордо</li><li>Полная Steam-версия игры без ограничений</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="mafia3.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 33. Mafia Trilogy Pack (Франшиза: Mafia) -->
+                <div class="card fran-mafia">
+                    <img src="mafiatrilogy.jpg" alt="MafiaTrilogy" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Mafia: Trilogy Pack</div>
+                            <ul class="features"><li>Полный криминальный пак из трех обновленных частей</li><li>Выгодное предложение, экономия кошелька 40%</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">30 ₽</div><a href="mafiatrilogy.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+                <!-- 34. Crimson Desert Deluxe (Франшиза: Crimson Desert) -->
+                <div class="card out-of-stock fran-crimson">
+                    <img src="crimsondesertdeluxe.jpg" alt="CrimsonDeluxe" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Crimson Desert</div>
+                            <ul class="features"><li>Премиум-набор наемника Пайвелла с бонусами</li><li>Продавец на связи в любое время</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">30 ₽</div><a href="crimsondesertdel.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 35. Crimson Desert Standart (Франшиза: Crimson Desert) -->
+                <div class="card fran-crimson">
+                    <img src="crimsondesert.jpg" alt="CrimsonStandart" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Crimson Desert</div>
+                            <ul class="features"><li>Масштабная экшен-RPG нового поколения</li><li>Быстрый и полностью безопасный оффлайн-запуск</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">20 ₽</div><a href="crimsondesert.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 36. Ведьмак 3 Complete (Франшиза: Ведьмак) -->
+                <div class="card fran-witcher">
+                    <img src="witcher3.png" alt="Witcher3" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Complete</span>Ведьмак 3: Дикая Охота</div>
+                            <ul class="features"><li>Некстген-версия + Кровь и Вино + Каменные Сердца</li><li>Автовыдача данных сразу после оплаты</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="witcher3.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 37. Ведьмак 2 Enhanced (Франшиза: Ведьмак) -->
+                <div class="card fran-witcher">
+                    <img src="witcher2.jpg" alt="Witcher2" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Enchansed</span>Ведьмак 2: Убийцы Королей</div>
+                            <ul class="features"><li>Расширенное режиссерское издание классической RPG</li><li>Пожизненный доступ к аккаунту и сохранениям</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="witcher2.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 38. Ведьмак 1 Enhanced (Франшиза: Ведьмак) -->
+                <div class="card fran-witcher">
+                    <img src="TheWitcher.jpeg" alt="Witcher1" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Enchansed</span>Ведьмак 1</div>
+                            <ul class="features"><li>Начало великой истории Белого Волка Геральта</li><li>Моментальная автоматическая активация</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="witcher.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 39. My Summer Car (Франшиза: My Cars) -->
+                <div class="card fran-cars">
+                    <img src="MySummerCar.jpeg" alt="MSC" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">My Summer Car</div>
+                            <ul class="features"><li>Сборка финского спортивного ведра с нуля</li><li>Мгновенный запуск в оффлайн режиме Steam</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="mysummercar.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 40. My Winter Car (Франшиза: My Cars) -->
+                <div class="card fran-cars">
+                    <img src="mywintercar.jpg" alt="MWC" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">My Winter Car</div>
+                            <ul class="features"><li>Зимний симулятор выживания сурового автомеханика</li><li>Выдача данных сразу после оплаты заказа</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="mywintercar.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 42. Death Stranding 1 (Франшиза: Death Stranding) -->
+                <div class="card out-of-stock fran-stranding">
+                    <img src="DS.jpg" alt="DS1" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Death Stranding (Director's Cut)</div>
+                            <ul class="features"><li>Расширенное издание симулятора курьера Кодзимы</li><li>Все дополнительные миссии доставки и бонусы</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="DS.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 43. Death Stranding 2 (Франшиза: Death Stranding) -->
+                <div class="card fran-stranding">
+                    <img src="ds2.jpg" alt="DS2" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title"><span class="edition-tag deluxe">Deluxe</span>Death Stranding 2: On the Beach</div>
+                            <ul class="features"><li>Продолжение путешествия Сэма Бриджеса</li><li>Вход в аккаунт без очередей</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">20 ₽</div><a href="ds2.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 44. Hollow Knight (Франшиза: Hollow Knight) -->
+                <div class="card fran-hollow">
+                    <img src="hk.jpg" alt="HollowKnight" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Hollow Knight</div>
+                            <ul class="features"><li>Приключение в полуразрушенном мире жуков</li><li>Моментальная автовыдача доступа 24/7</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">5 ₽</div><a href="hollowknight.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+                <!-- 45. Hollow Knight Silksong (Франшиза: Hollow Knight) -->
+                <div class="card fran-hollow">
+                    <img src="Silksong.jpg" alt="Silksong" class="card-img" loading="lazy">
+                    <div class="info">
+                        <div>
+                            <div class="game-title">Hollow Knight: Silksong</div>
+                            <ul class="features"><li>История Хорнет в совершенно новом опасном мире</li><li>Активация доступна сразу в день выхода игры</li></ul>
+                        </div>
+                        <div class="footer-flex"><div class="price">10 ₽</div><a href="silksong.html" class="btn">Заказ</a></div>
+                    </div>
+                </div>
+
+            </div> <!-- /grid -->
+        </div> <!-- /container -->
+    </div> <!-- /mafia-map-wrapper -->
+
+    <footer style="text-align: center; padding: 50px 20px; color: #4A4A52; font-size: 0.9rem; border-top: 1px solid #1C1C1F; margin-top: 80px; width: 100%; clear: both;">
+        <p style="margin: 0 auto; display: block;">© 2026 Emporio Shop. Все права защищены.</p>
         <p style="margin-top: 10px; font-size: 0.8rem; color: #4A4A52; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.4;">
             Steam является зарегистрированным товарным знаком Valve Corporation. 
             Данный сайт является независимой торговой витриной, не связан напрямую 
@@ -452,23 +1151,27 @@
     </footer>
 
     <script>
-        // Скрипт для Липкого Логотипа
+        // Скрипт плавного переключения липкого логотипа без микро-дерганий
         window.addEventListener('scroll', function() {
             const logoContainer = document.getElementById('logoContainer');
             const body = document.body;
             
-            if (window.scrollY > 140) {
-                logoContainer.classList.add('sticky');
-                body.classList.add('scrolled');
-            } else {
-                logoContainer.classList.remove('sticky');
-                body.classList.remove('scrolled');
-                logoContainer.style.transform = ''; 
-                logoContainer.style.left = '';
+            if (logoContainer) {
+                if (window.scrollY > 140) {
+                    if (!logoContainer.classList.contains('sticky')) {
+                        logoContainer.classList.add('sticky');
+                        body.classList.add('scrolled');
+                    }
+                } else {
+                    if (logoContainer.classList.contains('sticky')) {
+                        logoContainer.classList.remove('sticky');
+                        body.classList.remove('scrolled');
+                    }
+                }
             }
         });
 
-        // Массив мафиозных цитат
+        // Массив атмосферных цитат в кабинете Дона с защитой от ошибок
         const quotes = [
             "🤫 Самый <span>легальный криминал</span>",
             "🙍‍♂️ Джо в сделку <span>не входил...</span>",
@@ -477,8 +1180,139 @@
             "🩸 Никаких улик. <span>Только гейминг</span>"
         ];
 
-        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        document.getElementById('randomQuote').innerHTML = randomQuote;
+        const quoteContainer = document.getElementById('randomQuote');
+        if (quoteContainer) {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteContainer.innerHTML = randomQuote;
+        }
+// Функция для случайного перемешивания массива карточек
+function shuffleMafiaCards(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const track = document.getElementById('mafiaVerticalTrack');
+    const tickerContainer = document.getElementById('mafiaVerticalTicker');
+    const staticGrid = document.querySelector('.grid');
+    
+    if (!track || !tickerContainer || !staticGrid) return;
+
+    // Сохраняем оригинальные карточки один раз при загрузке сайта
+    const allStaticCards = Array.from(document.querySelectorAll('.grid .card'));
+    if (allStaticCards.length === 0) return;
+
+    // Функция, которая строит и запускает рандомный поток
+    function buildLiveTicker() {
+        // Очищаем трек от старых клонов
+        track.innerHTML = '';
+        
+        // Клонируем оригиналы, чтобы не сломать их в разделах
+        const clonedCards = allStaticCards.map(card => card.cloneNode(true));
+        const shuffledCards = shuffleMafiaCards(clonedCards);
+
+        // Дублируем массив для бесшовного зацикливания
+        const finalBatch = [];
+        shuffledCards.forEach(card => finalBatch.push(card));
+        shuffledCards.forEach(card => finalBatch.push(card.cloneNode(true)));
+
+        // Вставляем карточки в трек и фиксируем размеры под оригиналы
+        finalBatch.forEach(card => {
+            card.style.height = "615px";
+            card.style.maxHeight = "615px";
+            card.style.display = "flex"; // Гарантируем видимость внутри ленты
+            
+            const img = card.querySelector('.card-img');
+            if (img) {
+                img.style.height = "380px";
+                img.style.maxHeight = "380px";
+            }
+            track.appendChild(card);
+        });
+
+        // Динамический расчет высоты скролла
+        const cardHeight = 615;
+        const gap = 30;
+        const totalUniqueCards = shuffledCards.length;
+        const scrollDistance = (cardHeight + gap) * totalUniqueCards;
+
+        // Создаем или обновляем тег со стилями анимации
+        let styleTag = document.getElementById('mafiaDynamicTickerStyles');
+        if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = 'mafiaDynamicTickerStyles';
+            document.head.appendChild(styleTag);
+        }
+        styleTag.innerText = `
+            @keyframes mafiaVerticalScroll {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(-${scrollDistance}px); }
+            }
+            .mafia-vertical-track {
+                animation: mafiaVerticalScroll ${totalUniqueCards * 3.5}s linear infinite;
+            }
+        `;
+    }
+
+    // ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ РАЗДЕЛОВ, РАБОТЫ ЛЕНТЫ И FAQ
+    function handleRouteSwitch() {
+        const track = document.getElementById('mafiaVerticalTrack');
+        const tickerContainer = document.getElementById('mafiaVerticalTicker');
+        const staticGrid = document.querySelector('.grid');
+        const allTab = document.getElementById('tab-all');
+        const faqBlock = document.querySelector('.mafia-faq-block');
+        
+        if (!staticGrid || !tickerContainer || !track) return;
+
+        if (allTab && allTab.checked) {
+            staticGrid.style.display = 'none';
+            tickerContainer.style.display = 'block';
+            if (faqBlock) faqBlock.style.display = 'block'; 
+            
+            if (typeof buildLiveTicker === 'function') {
+                buildLiveTicker();
+            }
+        } else {
+            tickerContainer.style.display = 'none';
+            if (faqBlock) faqBlock.style.display = 'none';  
+            track.innerHTML = '';
+            staticGrid.style.display = 'grid';
+        }
+    }
+
+    // СОХРАНЕНИЕ ВЫБРАННОГО РАЗДЕЛА В ХРАНИЛИЩЕ БРАУЗЕРА
+    document.querySelectorAll('.mafia-route-toggle').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Запоминаем ID активной вкладки (например, 'tab-resident')
+            localStorage.setItem('emporio_active_tab', this.id);
+            handleRouteSwitch();
+        });
+    });
+
+    // АВТОМАТИЧЕСКОЕ ВОССТАНОВЛЕНИЕ В КЛАДКИ ПРИ ЗАГРУЗКЕ И ВОЗВРАТЕ
+    function restoreSavedTab() {
+        const savedTabId = localStorage.getItem('emporio_active_tab');
+        if (savedTabId) {
+            const radioToCheck = document.getElementById(savedTabId);
+            if (radioToCheck) {
+                radioToCheck.checked = true; // Включаем сохраненный раздел
+            }
+        }
+        handleRouteSwitch(); // Перестраиваем сетку под этот раздел
+    }
+
+    // Запускаем восстановление вкладки при первом открытии сайта
+    restoreSavedTab();
+
+    // ЖЕСТКИЙ ФИКС ДЛЯ СТРЕЛКИ НАЗАД И ВСТРОЕННОЙ КНОПКИ (Блокирует сброс кэша)
+    window.addEventListener('pageshow', function(event) {
+        restoreSavedTab();
+    });
+});
+
     </script>
 </body>
 </html>
