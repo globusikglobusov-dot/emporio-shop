@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html style="margin:0; padding:0; background:#000; overflow:hidden; width:100%; height:100%;">
 <body style="margin:0; padding:0; background:#000; width:100%; height:100%; display:flex; justify-content:center; align-items:center;">
-    <!-- Этот плеер спрятан внутри iframe, имеет автозапуск и зацикливание -->
-    <video id="v" data-src="DS2.mp4" controls muted loop preload="auto" style="width:100%; height:100%; object-fit:contain; background:#000;"></video>
+    
+    <!-- ДОБАВЛЕНО: preload="metadata" и playsinline для мобильных -->
+    <video src="DS2.mp4" id="v" controls autoplay muted loop playsinline preload="metadata" style="width:100%; height:100%; object-fit:contain; background:#000;"></video>
+    
     <script>
-        // Жесткий пинок автозапуска, который срабатывает внутри изолированного iframe
         window.addEventListener('DOMContentLoaded', () => {
             const v = document.getElementById('v');
             if (v) {
+                // Принудительно отключаем звук до вызова play()
                 v.muted = true;
+                
+                // Исправлено: событие 'pointerdown' работает на смартфонах в отличие от 'mouseover'
+                const forcePlay = () => { v.play(); };
+
                 v.play().catch(() => {
-                    // План Б: если браузер совсем параноик, видео стартанет при первом шевелении мышки внутри плеера
-                    window.addEventListener('mouseover', () => { v.play(); }, { once: true });
+                    window.addEventListener('pointerdown', forcePlay, { once: true });
+                    window.addEventListener('mouseover', forcePlay, { once: true });
                 });
             }
         });
