@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     // 1. СПИСОК НЕДОСТУПНЫХ ИГР
     const bannedGames = [
-        "crimsondesertdeluxe.html"
+        "crimsondesertdeluxe.html",
+        "DS.html"
     ];
 
     const currentPath = window.location.pathname.toLowerCase();
