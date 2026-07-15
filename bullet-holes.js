@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // ИНЪЕКЦИЯ СТИЛЕЙ (чтобы не прописывать CSS на 45 страницах)
+    // ИНЪЕКЦИЯ СТИЛЕЙ
     const style = document.createElement('style');
     style.textContent = `
         body { position: relative; }
@@ -19,8 +19,9 @@ document.addEventListener("DOMContentLoaded", function() {
     document.head.appendChild(style);
 
     // НАСТРОЙКИ
-    const logoSrc = "shot.png"; // Путь к твоей текстуре дырки
+    const logoSrc = "shot.png"; 
     const logoSize = 83; 
+    const contentWidth = 1200; // Фиксированная ширина основного контента
 
     const leftLayout = [
         { xPct: 0.10, yPct: 0.02, rot: -25 }, { xPct: 0.75, yPct: 0.14, rot: 12 },  
@@ -38,10 +39,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function renderPerfectChaos() {
         document.querySelectorAll('.bg-logo').forEach(el => el.remove());
+        
+        // 1. Если экран меньше ширины контента + отступы, сразу выходим
         if (window.innerWidth < 1250) return;
 
-        const maxAllowedWidth = (window.innerWidth - 1200) / 2 - 40;
-        const finalMaxWidth = maxAllowedWidth > 180 ? maxAllowedWidth : 180;
+        // 2. Считаем ЧЕСТНОЕ доступное пространство для одного бокового поля
+        const maxAllowedWidth = (window.innerWidth - contentWidth) / 2;
+        
+        // Резервируем безопасный отступ в 15px от центрального контента
+        const safetyMargin = 15; 
+        const usableWidth = maxAllowedWidth - safetyMargin - logoSize;
+
+        // Если картинка физически не пролезает в поле, не рендерим этот хаос
+        if (usableWidth <= 0) return;
+
         const fullPageHeight = document.documentElement.scrollHeight;
         const stepY = 1100; 
 
@@ -55,14 +66,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     let randomShiftX = isFirstBlock ? 0 : (Math.random() - 0.5) * 0.20;
                     let finalXPct = point.xPct + randomShiftX;
 
-                    if (finalXPct < 0.05) finalXPct = 0.05;
-                    if (finalXPct > 0.90) finalXPct = 0.90;
+                    // Ограничиваем проценты, чтобы не выходить за рамки поля
+                    if (finalXPct < 0) finalXPct = 0;
+                    if (finalXPct > 1) finalXPct = 1;
 
-                    let sidePx = finalXPct * (finalMaxWidth - logoSize);
+                    // 3. Считаем позицию от КРАЯ ЭКРАНА внутрь
+                    // Теперь 0% — это самый край экрана, а 100% — граница безопасности у контента
+                    let sidePx = safetyMargin + (finalXPct * usableWidth);
                     let topPx = currentYOffset + (point.yPct * (stepY - logoSize)) + randomShiftY;
 
                     if (topPx > (fullPageHeight - logoSize)) return;
-                    if (sidePx < 5) sidePx = 5;
                     if (topPx < 5) topPx = 5;
 
                     const imgElement = document.createElement('img');
