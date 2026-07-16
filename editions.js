@@ -167,24 +167,24 @@ document.addEventListener("DOMContentLoaded", () => {
         "re2": {
             standard: {
                 price: "10 ₽",
-                link: "https://funpay.com", // Ссылка на Standard RE2
+                link: "https://funpay.com/lots/offer?id=68231986", // Ссылка на Standard RE2
                 features: ["Абсолютно безопасная оффлайн активация", "Все вышедшие патчи уже включены", "Личные сохранения и прохождение без сбросов", "Гарантия и поддержка 24/7"]
             },
             deluxe: {
-                price: "25 ₽", 
+                price: "15 ₽", 
                 link: "https://funpay.com", // Ссылка на Deluxe RE2
                 features: ["Все бонусы Standard издания", "Набор костюмов для Леона («Шериф», «Нуар»)", "Набор костюмов для Клэр («Военный», «Нуар», «Эльза Уокер»)", "Оригинальный саундтрек и бонусное оружие «Самурайский дух»"]
             }
         },
         "re4": {
             standard: {
-                price: "15 ₽",
-                link: "https://funpay.com", // Ссылка на Standard RE4
+                price: "10 ₽",
+                link: "https://funpay.com/lots/offer?id=72738580", // Ссылка на Standard RE4
                 features: ["Абсолютно безопасная оффлайн активация", "Все вышедшие патчи и DLC уже включены", "Личные сохранения и прохождение без сбросов", "Гарантия и поддержка 24/7"]
             },
             gold: {
-                price: "35 ₽", 
-                link: "https://funpay.com", // Ссылка на Gold RE4
+                price: "15 ₽", 
+                link: "https://funpay.com/lots/offer?id=72738564", // Ссылка на Gold RE4
                 features: ["Все бонусы Standard издания", "Сюжетное дополнение «Separate Ways» (за Аду Вонг)", "Набор Extra DLC Pack (костюмы, фильтры, уникальное оружие)", "Спортивные и классические образы для Леона и Эшли"]
             }
         }
